@@ -17,6 +17,9 @@ The digital pet :
 - can come with you/portable and is smaller than you
 - can be synchrone the timetable/plans from your phone
 
+<img width="307" alt="image" src="https://github.com/user-attachments/assets/311d6159-9300-4d6f-aa2b-8f98c555fd28" />
+
+
 ## Intial Ideas
 
  1.	Little Chef:
