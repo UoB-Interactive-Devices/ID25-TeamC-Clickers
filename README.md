@@ -17,16 +17,18 @@ The digital pet :
 - can come with you/portable and is smaller than you
 - can be synchrone the timetable/plans from your phone
 
- 1.	Cook robot:
+## Intial Ideas
+
+ 1.	Little Chef:
+- Helps people who don’t like cooking/ aren’t use to it
 - Tells you recipes
-- Sets timer if needed
+- Sets timers if needed
 - Check what steps you have done and tells you when to do next step
--	Helps people who don’t like cooking/ aren’t use to it
--	Has a scales bowl
--	Tell me a fact setting
+-	Has a bowl which weighs the food
+-	Tell me a fact while you cook setting
 -	Can do voice activated or press its head
 
-2.	Health Tracker
+2.	Grow-U
 -	Pet grows when you do enough steps/ do your workout
 -	Grows when you get enough sleep
 -	Study
