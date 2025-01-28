@@ -18,17 +18,17 @@ The digital pet :
 - can be synchrone the timetable/plans from your phone
 
  1.	Cook robot:
-•	Tells you recipes
-•	Sets timer if needed
-•	Check what steps you have done and tells you when to do next step
-•	Helps people who don’t like cooking/ aren’t use to it
-•	Has a scales bowl
-•	Tell me a fact setting
-•	Can do voice activated or press its head
+- Tells you recipes
+- Sets timer if needed
+- Check what steps you have done and tells you when to do next step
+-	Helps people who don’t like cooking/ aren’t use to it
+-	Has a scales bowl
+-	Tell me a fact setting
+-	Can do voice activated or press its head
 
 2.	Health Tracker
-•	Pet grows when you do enough steps/ do your workout
-•	Grows when you get enough sleep
-•	Study
-•	water
+-	Pet grows when you do enough steps/ do your workout
+-	Grows when you get enough sleep
+-	Study
+-	water
 
