@@ -30,7 +30,7 @@ The digital pet :
 -	Tell me a fact while you cook setting
 -	Can do voice activated or press its head
 
-<img width="307" alt="image" src="https://github.com/user-attachments/assets/311d6159-9300-4d6f-aa2b-8f98c555fd28" />
+![image](https://github.com/user-attachments/assets/f49d9725-ea9f-4a23-88cb-7f715a996139)
 
 2.	Grow-U
 -	Pet grows when you do enough steps/ do your workout
