@@ -21,6 +21,7 @@ The digital pet :
 
 ## Intial Ideas
 
+
  1.	Little Chef:
 - Helps people who don’t like cooking/ aren’t use to it
 - Tells you recipes
@@ -29,6 +30,9 @@ The digital pet :
 -	Has a bowl which weighs the food
 -	Tell me a fact while you cook setting
 -	Can do voice activated or press its head
+
+  [Download PDF](images/story-board.pdf)
+
 
 
 
