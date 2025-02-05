@@ -1,4 +1,4 @@
-# ID25 - TEAM C
+# ID25 - TEAM C - Clickers
 
 ## Team members
 
