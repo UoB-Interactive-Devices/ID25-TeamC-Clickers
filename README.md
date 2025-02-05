@@ -15,7 +15,6 @@ The digital pet :
 - creates a emotional attachment to it (ie because it's cute)
 - won't do something that could negatively impact you on purpose
 - can come with you/portable and is smaller than you
-- can be synchrone the timetable/plans from your phone
 
 
 
