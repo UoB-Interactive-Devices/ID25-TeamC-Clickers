@@ -31,7 +31,6 @@ The digital pet :
 -	Tell me a fact while you cook setting
 -	Can do voice activated or press its head
 
-  [Download PDF](images/story-board.pdf)
 
 
 
