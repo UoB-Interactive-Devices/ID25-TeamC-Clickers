@@ -16,7 +16,8 @@ The digital pet :
 - won't do something that could negatively impact you on purpose
 - can come with you/portable and is smaller than you
 
-
+## Overleaf
+[Interactive Devices - Little Chef](https://www.overleaf.com/read/jrgjjcbtjtsd#6c3bbd)
 
 ## Intial Ideas
 
@@ -30,17 +31,10 @@ The digital pet :
 -	Tell me a fact while you cook setting
 -	Can do voice activated or press its head
 
-
-
-
-
-
 2.	Grow-U
 -	Pet grows when you do enough steps/ do your workout
 -	Grows when you get enough sleep
 -	Study
 -	water
 
-## Wirting links
 
-- [Overleaf link](https://www.overleaf.com/8933624773xkygkbpvfjfr#7f1b4e)
