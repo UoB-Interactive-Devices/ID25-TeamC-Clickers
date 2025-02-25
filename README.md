@@ -9,6 +9,7 @@
 - Farid
   
 ## Manifesto
+
 The digital pet :
 - can understand what you want through your interaction and can give a helpful/entertaining/comforting response
 - is something that seems a bit alive/ animal like
@@ -17,10 +18,10 @@ The digital pet :
 - can come with you/portable and is smaller than you
 
 ## Overleaf
+
 [Interactive Devices - Little Chef](https://www.overleaf.com/read/jrgjjcbtjtsd#6c3bbd)
 
 ## Intial Ideas
-
 
  1.	Little Chef:
 - Helps people who don’t like cooking/ aren’t use to it
@@ -37,4 +38,28 @@ The digital pet :
 -	Study
 -	water
 
+## Writing
 
+Abstract and Intro (clarity) (10)
+- Currently written and in overleaf
+- Need to add results after carrying out the study
+ 
+Related work/orginality (15)
+- Thermomix
+- Checkout - cooking robot, cooking with conversion (prompt recipe assistant bot)
+- Originality - no device that currently teaches you in real time
+
+Design and implementation  (total 40)
+- Outline method and steps 
+- theory, assembly, materials, ideas etc. 
+- Different iteration our design went through and why changes were made
+-   From animal to robot (robot seems cleaner and is easier to build)
+-   Made Robot larger and less thick (screen wouldn't fit and was unecessarily bulky)
+
+Device evaluation (study) (10) 
+- Does the device meet its requirement of making cooking easier and helping the individual learn 
+- What is specific feature of the device that worked well 
+- How could this device be improved 
+
+Discussion (5) 
+- What the possibility (in mainstream) of having a device like this mean
