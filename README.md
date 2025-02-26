@@ -39,7 +39,7 @@ The digital pet :
 -	water
 
 ## Designs
-![Alt text](images/Design1.png)
+![First iteration](images/Design1.jpeg)
 
 
 ## Writing
