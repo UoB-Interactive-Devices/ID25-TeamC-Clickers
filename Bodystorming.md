@@ -1,7 +1,7 @@
-# Bodystorming  
+## Bodystorming  
 
-## Date: 20/03 12:00-13:00  
-## Place: 1.70 BIG Office, Queens Building  
+### Date: 20/03 12:00-13:00  
+### Place: 1.70 BIG Office, Queens Building  
 
 ### Who's available:  
 - Maisie  
