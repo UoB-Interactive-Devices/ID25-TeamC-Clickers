@@ -38,6 +38,10 @@ The digital pet :
 -	Study
 -	water
 
+## Designs
+![First iteration](images/Design1.jpeg)
+
+
 ## Writing
 
 Abstract and Intro (clarity) (10)
