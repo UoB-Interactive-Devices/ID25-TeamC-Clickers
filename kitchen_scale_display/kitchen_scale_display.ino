@@ -4,12 +4,16 @@
 #include "Debug.h"
 #include "ImageData.h"
 #include "HX711.h"
+#include <Servo.h>
 
 #define CLK  A0
 #define DOUT A1
-#define INP  9
-#define CALIBRATION_FACTOR 0.51
+#define BUTTON_PIN 9
+#define CALIBRATION_FACTOR 336.69
+#define TOUCH_PIN 12
+#define SERVO_PIN 6
 
+Servo myServo;  // Create a Servo object
 HX711 scale;
 float weight = 0.00;
 UBYTE *BlackImage;
@@ -34,12 +38,17 @@ void setup() {
     Paint_Clear(BLACK);
     Driver_Delay_ms(500);
 
-    Paint_DrawString_EN(10, 10, "Weight:", &Font16, WHITE, BLACK);
-    Paint_DrawString_EN(110, 30, "g", &Font20, WHITE, BLACK);
+    Paint_DrawString_EN(15, 10, "Weight:", &Font16, WHITE, WHITE);
+    Paint_DrawNum(30, 30, "0.00", &Font20, 2, WHITE, WHITE);
+    Paint_DrawString_EN(110, 30, "g", &Font20, WHITE, WHITE);
     
     OLED_0in96_display(BlackImage); // Display initial screen
 
-    pinMode(INP, INPUT);
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
+    pinMode(TOUCH_PIN, INPUT);
+    
+    myServo.attach(SERVO_PIN);
+    myServo.write(0); // Set initial position
     
     scale.begin(DOUT, CLK);
     scale.set_scale(CALIBRATION_FACTOR);
@@ -47,8 +56,11 @@ void setup() {
 }
 
 void loop() {
-    if(digitalRead(INP) == HIGH){
+    if(digitalRead(BUTTON_PIN) == 0){
       Serial.println("button pressed");
+      Paint_Clear(BLACK); // Clear previous display content
+      Paint_DrawString_EN(40, 30, "TARE", &Font20, WHITE, WHITE);
+      OLED_0in96_display(BlackImage);
       scale.tare();
     }
 
@@ -66,6 +78,15 @@ void loop() {
     Serial.print("Weight: ");
     Serial.print(weight, 2);
     Serial.println(" g");
+
+    int touchValue = digitalRead(TOUCH_PIN);
+    if (touchValue == HIGH) {
+        myServo.write(90);
+        Serial.println("TOUCHED");
+    } else {
+        myServo.write(0);
+        Serial.println("Not touched");
+    }
 
     scale.power_down();	
     delay(500); // Small delay to reduce flickering
