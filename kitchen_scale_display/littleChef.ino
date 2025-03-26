@@ -19,8 +19,8 @@ int stepDelay = 20;
 // Scale Setup
 #define CLK A0
 #define DOUT A1
-#define INP 9  // Scale reset button
-#define CALIBRATION_FACTOR 0.51
+#define BUTTON_PIN 9  // Scale reset button
+#define CALIBRATION_FACTOR 336.69
 
 HX711 scale;
 float weight = 0.00;
@@ -48,7 +48,7 @@ void setup() {
     OLED_0in96_display(BlackImage);
 
     // Initialize Scale
-    pinMode(INP, INPUT);
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
     scale.begin(DOUT, CLK);
     scale.set_scale(CALIBRATION_FACTOR);
     scale.tare(); // Reset scale to zero
@@ -66,9 +66,12 @@ void loop() {
 
 // Function to handle scale operations
 void handleScale() {
-    if (digitalRead(INP) == HIGH) {
-        Serial.println("Button pressed, resetting scale...");
-        scale.tare();
+    if(digitalRead(BUTTON_PIN) == 0){
+      Serial.println("button pressed");
+      Paint_Clear(BLACK); // Clear previous display content
+      Paint_DrawString_EN(40, 30, "TARE", &Font20, WHITE, WHITE);
+      OLED_0in96_display(BlackImage);
+      scale.tare();
     }
 
     weight = scale.get_units(12);
@@ -91,10 +94,11 @@ void handleScale() {
 
 // Function to handle touch sensor input
 void handleTouchSensor() {
-    if (digitalRead(TOUCH_SENSOR) == HIGH) {
-        Serial.println("START");  // Send signal to laptop
-        delay(500);  // Debounce delay
-    }
+  int touchValue = digitalRead(TOUCH_SENSOR);
+  if (touchValue == HIGH) {
+      Serial.println("START");  // Send signal to laptop
+      delay(500);  // Debounce delay
+  }
 }
 
 // Function to listen for messages from the laptop
