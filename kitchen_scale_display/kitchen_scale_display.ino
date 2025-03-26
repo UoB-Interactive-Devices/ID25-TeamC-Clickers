@@ -4,7 +4,7 @@
 #include "Debug.h"
 #include "ImageData.h"
 #include "HX711.h"
-#include <Servo.h>
+#include "Servo.h"
 
 #define CLK  A0
 #define DOUT A1
