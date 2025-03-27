@@ -3,13 +3,22 @@ import speech_recognition as sr
 import re
 import time
 import serial
+import openai  
+import os  
+
+apikey = ""
+# Set up OpenAI API key (replace with your actual key)
+openai.api_key = apikey
+
+
+ASSISTANT_ID = "asst_aapUnANFXgPBNW6vnagt4v48"
 
 # Initialize the text-to-speech engine (pyttsx3)
 engine = pyttsx3.init()
 try:
     # Try to establish a serial connection
-    arduino = serial.Serial('COM13', 9600, timeout=1)
-    print("Successfully connected to Arduino on COM13")
+    arduino = serial.Serial('COM14', 115200, timeout=1)
+    print("Successfully connected to Arduino on COM1  ")
 except serial.SerialException:
     print("Error: Unable to connect to Arduino. Please check the connection or port.")
 except Exception as e:
@@ -17,7 +26,7 @@ except Exception as e:
 time.sleep(2) 
 
 # Set properties for speech output (optional)
-engine.setProperty('rate', 150)  # Speed of speech
+engine.setProperty('rate', 180)  # Speed of speech
 engine.setProperty('volume', 0.9)  # Volume level (0.0 to 1.0)
 
 # Set a robotic-sounding voice (if available on the system)
@@ -61,10 +70,44 @@ def listen_to_user():
         return None
 
 # Function to simulate AI response manually
-def get_littlechef_response(user_input):
-    print("\n Respond to: ", user_input)
-    response = input("\nEnter LittleChef's response: ")  # Manually input a response
-    return response.strip()
+def get_littlechef_response(user_input, thread_id):
+    try:
+        # ✅ Use the existing thread instead of creating a new one
+        openai.beta.threads.messages.create(
+            thread_id=thread_id,
+            role="user",
+            content=user_input
+        )
+
+        # Run the Assistant
+        run = openai.beta.threads.runs.create(
+            thread_id=thread_id,
+            assistant_id=ASSISTANT_ID
+        )
+        run_id = run.id  
+
+        # Wait for response
+        while True:
+            run_status = openai.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run_id)
+            if run_status.status == "completed":
+                break
+            time.sleep(1)  
+
+        # Get the Assistant's reply
+        messages = openai.beta.threads.messages.list(thread_id=thread_id)
+        
+        if messages.data:  # ✅ Check if there's a response
+            response_text = messages.data[0].content[0].text.value
+            print(f"\n🔹 AI Response: {response_text}")  # ✅ Debugging step
+            return response_text  
+        else:
+            print("\n No response received from OpenAI.")
+            return "Sorry, I couldn't process that."
+
+    except Exception as e:
+        print(f"Error getting response from OpenAI Assistant: {e}")
+        return "Sorry, I couldn't process that."
+
 
 # Function to speak the assistant's response (text-to-speech)
 def speak_response(response_text):
@@ -90,7 +133,7 @@ def start_timer(minutes):
     global timer_active, timer_end_time
     print(f"\nTimer for {minutes} minutes started")
     timer_active = True
-    timer_end_time = time.time() + (minutes * 1)  # Calculate the end time for the timer
+    timer_end_time = time.time() + (minutes * 3)  # Calculate the end time for the timer
 
 def check_timer():
     """Check if the timer has ended"""
@@ -106,43 +149,61 @@ def check_for_exit(user_input):
 
 # Function to simulate a timer
 def main():
-    print("\nWaiting for the user to say 'hello', 'hi', or 'Little Chef'...")  
+    #print("\nWaiting for the user to say 'hello', 'hi', or 'Little Chef'...")  
+    print("Waiting for Arduino to send 'START' signal...")  
 
-    print(prompt)  # Display the prompt in the terminal
+    while True:
+        if arduino.in_waiting > 0:  # Check if there's incoming data from Arduino
+            signal = arduino.readline().decode(errors='ignore').strip()   # Read and decode the signal
+            if signal == "START":
+                print("Received 'START' signal from Arduino. Beginning LittleChef...")
+                break  # Exit the loop and start the assistant
 
+    #print(prompt)  # Display the prompt in the terminal
+
+    # ✅ Create a persistent thread at the start
+    thread = openai.beta.threads.create()
+    thread_id = thread.id  
+    arduino.write(b'TIMER_DONE')
     # Simulate sending prompt (manual response for now)
-    littlechef_intro = get_littlechef_response("Introduce yourself to the user.")
-    speak_response("Hi! I’m LittleChef, your step-by-step cooking buddy. Let’s make something delicious together!")
+    littlechef_intro = get_littlechef_response("Introduce yourself to the user. dont use emojis and be casual and human like, not too long", thread_id)
+    arduino.write(b'TIMER_DONE') 
+    speak_response(littlechef_intro)
 
     while True:
         if check_timer():
-                    speak_response("The timer has finished!")
-                    arduino.write(b'TIMER_DONE') 
-                    print("Sent 'TIMER_DONE' to Arduino")
+            arduino.write(b'TIMER_DONE') 
+            littlechef_response = get_littlechef_response("tell the user the timer has finished!", thread_id)
+            if littlechef_response:
+                handle_tags(littlechef_response)
+                speak_response(littlechef_response)
+            print("Sent 'TIMER_DONE' to Arduino")
+
         user_input = listen_to_user()
         if user_input:
-            # Check if the user wants to exit
             if check_for_exit(user_input):
                 speak_response("Goodbye! Happy cooking!")
-                break  # Exit the loop if the user said "exit" or similar
+                os.execv(sys.executable, ['python'] + sys.argv)
+                break  # Exit the loop
 
             print(f"\nUser: {user_input}")  # Show user input
 
             if check_timer():
-                    speak_response("The timer has finished!")
-                    arduino.write(b'TIMER_DONE') 
-                    print("Sent 'TIMER_FINISHED' to Arduino")
-            
-            littlechef_response = get_littlechef_response(user_input)  # Simulated LLM response
+                arduino.write(b'TIMER_DONE') 
+                littlechef_response = get_littlechef_response("tell the user the timer has finished!", thread_id)
+                if littlechef_response:
+                    handle_tags(littlechef_response)
+                    speak_response(littlechef_response)
+                print("Sent 'TIMER_DONE' to Arduino")
 
-            # If LittleChef's response contains a timer tag, we handle the timer
+
+            # ✅ Use the same thread ID so conversation history is remembered
+            littlechef_response = get_littlechef_response(user_input, thread_id)
+
             if littlechef_response:
-                handle_tags(littlechef_response)  # Handle timers if needed
-                
-                # Before speaking, check if the timer has ended
-                
-                # Speak the response
-                speak_response(littlechef_response)  # Speak the response
+                handle_tags(littlechef_response)
+                speak_response(littlechef_response) 
+
 
 if __name__ == "__main__":
     main()
