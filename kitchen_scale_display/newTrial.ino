@@ -29,7 +29,6 @@ void serialEvent() {
 
 void setup() {
     System_Init();
-    Serial.begin(9600);
     Serial.println("Waiting for touch signal...");
     pinMode(TOUCH_PIN, INPUT);
     
