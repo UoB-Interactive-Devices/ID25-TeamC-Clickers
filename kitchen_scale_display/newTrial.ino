@@ -72,8 +72,23 @@ void setup() {
 
 void loop() {
     if (timerDoneFlag) {
-        myServo.write(90);
-        Serial.println("Servo moved due to TIMER_DONE");
+        // Make the servo move up and down 3 times
+        for (int i = 0; i < 3; i++) {
+            // Move the servo to vertical position (90 degrees)
+            myServo.write(90);
+            Serial.println("Servo moving to 90 degrees");
+            delay(100); // Wait for half a second
+
+            // Move the servo to horizontal position (0 degrees)
+            myServo.write(0);
+            Serial.println("Servo moving to 0 degrees");
+            delay(100); // Wait for half a second
+        }
+
+        // After the waving motion, reset the servo to horizontal position (0 degrees)
+        myServo.write(0);
+        Serial.println("Servo reset to 0 degrees");
+
         timerDoneFlag = false;
     }
 
