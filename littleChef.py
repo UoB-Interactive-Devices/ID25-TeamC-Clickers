@@ -5,6 +5,7 @@ import time
 import serial
 import openai  
 import os  
+import sys
 
 apikey = ""
 # Set up OpenAI API key (replace with your actual key)
@@ -144,7 +145,7 @@ def check_timer():
     return False
 
 def check_for_exit(user_input):
-    exit_keywords = ["exit", "quit", "stop", "goodbye"]
+    exit_keywords = ["exit", "quit", "goodbye", "bye"]
     return any(word in user_input.lower() for word in exit_keywords)
 
 # Function to simulate a timer
@@ -166,13 +167,14 @@ def main():
     thread_id = thread.id  
     arduino.write(b'TIMER_DONE')
     # Simulate sending prompt (manual response for now)
-    littlechef_intro = get_littlechef_response("Introduce yourself to the user. dont use emojis and be casual and human like, not too long", thread_id)
+    littlechef_intro = get_littlechef_response("Introduce yourself to the user in 2 sentences. dont use emojis and be casual and human like. also tell the user they can turn you off by saying goodbye", thread_id)
     arduino.write(b'TIMER_DONE') 
     speak_response(littlechef_intro)
 
     while True:
         if check_timer():
             arduino.write(b'TIMER_DONE') 
+            speak_response("Ding, ding")
             littlechef_response = get_littlechef_response("tell the user the timer has finished!", thread_id)
             if littlechef_response:
                 handle_tags(littlechef_response)
@@ -182,9 +184,27 @@ def main():
         user_input = listen_to_user()
         if user_input:
             if check_for_exit(user_input):
-                speak_response("Goodbye! Happy cooking!")
-                os.execv(sys.executable, ['python'] + sys.argv)
-                break  # Exit the loop
+                speak_response("Goodbye! Happy cooking! You can always turn me on again by pressing my hat.")
+                arduino.write(b'EXIT')
+                print("Waiting for Arduino to send 'START' signal...")  
+
+                while True:
+                    if arduino.in_waiting > 0:  # Check if there's incoming data from Arduino
+                        signal = arduino.readline().decode(errors='ignore').strip()   # Read and decode the signal
+                        if signal == "START":
+                            print("Received 'START' signal from Arduino. Beginning LittleChef...")
+                            break  # Exit the loop and start the assistant
+
+                # ✅ Create a persistent thread at the start
+                 
+                arduino.write(b'TIMER_DONE')
+                # Simulate sending prompt (manual response for now)
+                littlechef_intro = get_littlechef_response("Say that you are back and can help out to the user", thread_id)
+                speak_response(littlechef_intro)
+                arduino.write(b'TIMER_DONE') 
+    
+                continue
+
 
             print(f"\nUser: {user_input}")  # Show user input
 
