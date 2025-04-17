@@ -19,7 +19,7 @@ The digital pet :
 
 ## Overleaf
 
-[Interactive Devices - Little Chef](https://www.overleaf.com/read/jrgjjcbtjtsd#6c3bbd)
+[Interactive Devices - Little Chef](https://www.overleaf.com/8933624773xkygkbpvfjfr#7f1b4e)
 
 ## Intial Ideas
 
